@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: project
+   labels: 
+      app: project
+spec:
+   replicas: 3
+   selector:
+     matchLabels:
+        app: Project
+
+    template:
+     metadata:
+       labels:
+         app: project
+
+     spec:
+       containers:
+          - name: tomcat
+            image: 3.109.58.114:8081/tomcat:1.0
+            ports:
+              - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+   name: project-service
+
+spec:
+  selector:
+    app: project
+  type: NodePort
+
+  ports:
+   - protocol: TCP
+     port: 8080
+     targetPort: 8080
